@@ -56,3 +56,4 @@ jobs:
           TF_HTTP_ADDRESS: "${{ secrets.STATE_HOST }}/state/${{ fromJSON(inputs.job).projectName }}"
           TF_HTTP_LOCK_ADDRESS: "${{ secrets.STATE_HOST }}/state/${{ fromJSON(inputs.job).projectName }}"
           TF_HTTP_UNLOCK_ADDRESS: "${{ secrets.STATE_HOST }}/state/${{ fromJSON(inputs.job).projectName }}"
+          TF_VAR_STATE_HOST: ${{ secrets.STATE_HOST }}
