@@ -34,11 +34,11 @@ jobs:
             {
               "main": {
                 "STAGE": "production",
-                "TF_HTTP_PASSWORD": "${{ secrets.PRD_STATE_PASSWORD }}",
+                "TF_HTTP_PASSWORD": "${{ secrets.PRD_STATE_PASSWORD }}"
               },
               "*": {
                 "STAGE": "develop",
-                "TF_HTTP_PASSWORD": "${{ secrets.DEV_STATE_PASSWORD }}",
+                "TF_HTTP_PASSWORD": "${{ secrets.DEV_STATE_PASSWORD }}"
               }
             }
       - uses: diggerhq/digger@latest
