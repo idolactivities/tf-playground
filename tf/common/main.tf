@@ -28,4 +28,12 @@ module "playground_label" {
   tags       = var.tags
 }
 
+resource "random_id" "example" {
+  byte_length = 4
+}
+
+resource "tls_private_key" "example" {
+  algorithm = "RSA"
+}
+
 # vim:ft=terraform:
