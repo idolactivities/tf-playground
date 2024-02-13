@@ -1,0 +1,58 @@
+---
+name: Digger Orchestration
+run-name: "[${{ fromJSON(inputs.job).projectName }}]
+  ${{ join(fromJSON(inputs.job).commands) }} via
+  PR #${{ fromJSON(inputs.job).pullRequestNumber }}"
+
+"on":
+  workflow_dispatch:
+    inputs:
+      id:
+        description: 'run identifier'
+        required: false
+      job:
+        required: true
+      comment_id:
+        required: true
+
+jobs:
+  digger:
+    name: "run ${{ join(fromJSON(inputs.job).commands) }}"
+    runs-on: ubuntu-latest
+    concurrency: 1
+    permissions:
+      contents: write       # required to merge PRs
+      actions: write        # required for plan persistence
+      id-token: write       # required for workload-identity-federation
+      pull-requests: write  # required to post PR comments
+      statuses: write       # required to validate combined PR status
+    steps:
+      - uses: kanga333/variable-mapper@v0.3.0
+        with:
+          key: "${{ fromJSON(inputs.job).projectName }}"
+          map: |
+            {
+              "main": {
+                "STAGE": "production",
+                "TF_HTTP_PASSWORD": "${{ secrets.PRD_STATE_PASSWORD }}",
+              },
+              "*": {
+                "STAGE": "develop",
+                "TF_HTTP_PASSWORD": "${{ secrets.DEV_STATE_PASSWORD }}",
+              }
+            }
+      - uses: diggerhq/digger@latest
+        with:
+          digger-organisation: digger
+          digger-hostname: "https://cloud.digger.dev"
+          digger-token: ${{ secrets.DIGGER_TOKEN }}
+          disable-locking: true
+          setup-opentofu: true
+          opentofu-version: 1.6.0
+        env:
+          GITHUB_CONTEXT: ${{ toJson(github) }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          TF_HTTP_USERNAME: basic
+          TF_HTTP_ADDRESS: "${{ secrets.STATE_HOST }}/state/${{ fromJSON(inputs.job).projectName }}"
+          TF_HTTP_LOCK_ADDRESS: "${{ secrets.STATE_HOST }}/state/${{ fromJSON(inputs.job).projectName }}"
+          TF_HTTP_UNLOCK_ADDRESS: "${{ secrets.STATE_HOST }}/state/${{ fromJSON(inputs.job).projectName }}"

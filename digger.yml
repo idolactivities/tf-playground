@@ -1,0 +1,24 @@
+---
+projects:
+  - name: common-main
+    dir: tf/common
+    opentofu: true
+  - name: building-block-main
+    dir: tf/building-block
+    opentofu: true
+workflows:
+  default:
+    plan:
+      steps:
+        - init
+        - plan:
+          extra_args:
+            - "-var-file=global.tfvars"
+            - "-var-file=${STAGE}.tfvars"
+    apply:
+      steps:
+        - init
+        - apply:
+          extra_args:
+            - "-var-file=global.tfvars"
+            - "-var-file=${STAGE}.tfvars"
