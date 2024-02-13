@@ -6,6 +6,7 @@ projects:
   - name: building-block-main
     dir: tf/building-block
     opentofu: true
+    depends_on: ["common-main"]
 workflows:
   default:
     plan:
