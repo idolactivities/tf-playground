@@ -53,7 +53,7 @@ jobs:
           GITHUB_CONTEXT: ${{ toJson(github) }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           TF_HTTP_USERNAME: basic
-          TF_HTTP_ADDRESS: "${{ secrets.STATE_HOST }}/state/${{ fromJSON(inputs.job).projectName }}"
-          TF_HTTP_LOCK_ADDRESS: "${{ secrets.STATE_HOST }}/state/${{ fromJSON(inputs.job).projectName }}"
-          TF_HTTP_UNLOCK_ADDRESS: "${{ secrets.STATE_HOST }}/state/${{ fromJSON(inputs.job).projectName }}"
+          TF_HTTP_ADDRESS: "${{ secrets.STATE_HOST }}/state/tf-playground/${{ fromJSON(inputs.job).projectName }}"
+          TF_HTTP_LOCK_ADDRESS: "${{ secrets.STATE_HOST }}/state/tf-playground/${{ fromJSON(inputs.job).projectName }}"
+          TF_HTTP_UNLOCK_ADDRESS: "${{ secrets.STATE_HOST }}/state/tf-playground/${{ fromJSON(inputs.job).projectName }}"
           TF_VAR_STATE_HOST: ${{ secrets.STATE_HOST }}
