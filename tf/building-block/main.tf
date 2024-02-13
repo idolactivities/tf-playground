@@ -20,7 +20,8 @@ data "terraform_remote_state" "common" {
 ###################
 
 locals {
-  _common = data.terraform_remote_state.common.outputs
+  _common         = data.terraform_remote_state.common.outputs
+  private_ssh_key = local._common.ssh_private_key
 }
 
 #########################
@@ -39,5 +40,9 @@ module "bb_label" {
 }
 
 data "cheesecake_cheesecakes" "all" {}
+
+data "tls_public_key" "example" {
+  private_key_openssh = local.private_ssh_key
+}
 
 # vim:ft=terraform:
