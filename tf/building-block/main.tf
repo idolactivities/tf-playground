@@ -6,7 +6,7 @@ terraform {
 data "terraform_remote_state" "common" {
   backend = "http"
   config = {
-    address = "${var.state_host}/state/common-main"
+    address = "${var.state_host}/state/tf-playground/common-main"
   }
 }
 
