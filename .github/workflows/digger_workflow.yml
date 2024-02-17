@@ -41,7 +41,7 @@ jobs:
                 "TF_HTTP_PASSWORD": "${{ secrets.DEV_STATE_PASSWORD }}"
               }
             }
-      - uses: diggerhq/digger@v0.4.1
+      - uses: StirNetwork/digger@test/run-cmd
         with:
           digger-organisation: digger
           digger-hostname: "https://cloud.digger.dev"
