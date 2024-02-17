@@ -7,6 +7,9 @@ projects:
     dir: tf/building-block
     opentofu: true
     depends_on: ["common-main"]
+  - name: ansible-test-main
+    dir: tf/ansible-test
+    opentofu: true
 workflows:
   default:
     plan:
@@ -23,3 +26,22 @@ workflows:
           extra_args:
             - "-var-file=global.tfvars"
             - "-var-file=${STAGE}.tfvars"
+  with-ansible:
+    plan:
+      steps:
+        - init
+        - plan:
+          extra_args:
+            - "-var-file=global.tfvars"
+            - "-var-file=${STAGE}.tfvars"
+        - run: ansible-galaxy install -r ansible/requirements.yml
+        - run: ansible-playbook --syntax-check -i ansible/inventory.yml ansible/site.yml | tee -a $DIGGER_OUT
+    apply:
+      steps:
+        - init
+        - apply:
+          extra_args:
+            - "-var-file=global.tfvars"
+            - "-var-file=${STAGE}.tfvars"
+        - run: ansible-galaxy install -r ansible/requirements.yml
+        - run: ansible-playbook -i ansible/inventory.yml ansible/site.yml | tee -a $DIGGER_OUT

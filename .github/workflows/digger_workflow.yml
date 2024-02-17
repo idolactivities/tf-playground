@@ -27,6 +27,7 @@ jobs:
       pull-requests: write  # required to post PR comments
       statuses: write       # required to validate combined PR status
     steps:
+      - run: which ansible-playbook
       - uses: kanga333/variable-mapper@v0.3.0
         with:
           key: "${{ fromJSON(inputs.job).projectName }}"
@@ -41,7 +42,7 @@ jobs:
                 "TF_HTTP_PASSWORD": "${{ secrets.DEV_STATE_PASSWORD }}"
               }
             }
-      - uses: diggerhq/digger@latest
+      - uses: diggerhq/digger@v0.4.1
         with:
           digger-organisation: digger
           digger-hostname: "https://cloud.digger.dev"
