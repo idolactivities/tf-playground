@@ -27,7 +27,6 @@ jobs:
       pull-requests: write  # required to post PR comments
       statuses: write       # required to validate combined PR status
     steps:
-      - run: which ansible-playbook
       - uses: kanga333/variable-mapper@v0.3.0
         with:
           key: "${{ fromJSON(inputs.job).projectName }}"
