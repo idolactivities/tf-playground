@@ -1,0 +1,7 @@
+---
+- hosts: localhost
+  tasks:
+    - name: nya
+      ansible.builtin.shell: cat /etc/lsb-release
+    - ansible.builtin.debug:
+        var: some_var
